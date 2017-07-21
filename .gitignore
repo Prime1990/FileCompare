@@ -3,3 +3,4 @@ out
 .idea
 *.log
 *.iml
+.DS_Store
