@@ -4,10 +4,53 @@ import filecompare.FileCompare;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class DatenbankTest {
 
 	private static FileCompare tester;
-	
+
+	private void checkFile(String fileNummer) {
+		HashMap<String, String> map = new HashMap<>();
+		ClassLoader classLoader = getClass().getClassLoader();
+
+		String filesMainframe = classLoader.getResource("mainframe/file" + fileNummer).getFile();
+		String filesSolaris = classLoader.getResource("solaris/file" + fileNummer).getFile();
+
+		File dirMainframe = new File(filesMainframe);
+		File dirSolaris = new File(filesSolaris);
+
+		ArrayList<String> files = new ArrayList();
+
+		if(dirMainframe.isDirectory()){
+			for (File f : dirMainframe.listFiles()) {
+				if(f.isFile())
+					files.add(f.getAbsolutePath());
+			}
+		}
+
+		if(dirSolaris.isDirectory()) {
+			int i = 0;
+			for (File f : dirSolaris.listFiles()) {
+				if (f.isFile()) {
+					map.put(files.get(i), f.getAbsolutePath());
+					i++;
+				}
+			}
+		}
+
+		if (map.size() == 0) {
+			fail("Für File " + fileNummer + " sind keine Daten vorhanden!");
+		}
+
+		for(String file : map.keySet()) {
+			assertTrue("Check database file " + fileNummer, tester.areFilesIdentical(file, map.get(file)));
+		}
+	}
+
 	@BeforeClass
 	public static void prepareTester() {
 		tester = new FileCompare();
@@ -161,18 +204,16 @@ public class DatenbankTest {
 	public void testAreFiles140Identical() {
 		fail("Not yet implemented");
 	}
-
 	@Test
 	public void testAreFiles141Identical() {
 
-		assertTrue("Check database file 141", tester.areFilesIdentical("C:/Temp/db54_f333_(141)_output", "C:/Temp/f141_pc_20170629"));
+		checkFile("141");
+
 	}
-	
 	@Test
 	public void testAreFiles142dentical() {
 		fail("Not yet implemented");
 	}
-
 	@Test
 	public void testAreFiles143Identical() {
 		fail("Not yet implemented");

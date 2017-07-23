@@ -1,0 +1,10 @@
+In diesen Ordner werden alle Files vom Solaris-System kopiert.
+Dabei ist für jedes Datenbank-File ein Unterordner anzulegen, da die Datenbank-Files evtl. geteilt werden müssen.
+
+Beispiel:
+
+resources
+  - solaris
+    - file141
+      - file141_1
+      - file141_2

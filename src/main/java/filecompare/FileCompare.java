@@ -68,6 +68,16 @@ public class FileCompare {
             byte[] s1 = file1String.getBytes(StandardCharsets.ISO_8859_1);
             byte[] s2 = file2String.getBytes(StandardCharsets.ISO_8859_1);
 
+            if(s1.length != s2.length) {
+
+                String differentChar = "Die Zeilen sind unterschiedlich lang!";
+                String text = "Unterschiede in der Zeile " + (i + 1) + ": " + differentChar;
+                log.error(text);
+
+                return false;
+
+            }
+
             for (int j = 0; j < s1.length; j++) {
                 if (s1[j] != s2[j]) {
                     identical = false;
